@@ -151,4 +151,16 @@ big_integer operator*(big_integer a, big_integer const& b) {
     return a *= b;
 }
 
+bool big_integer::operator==(big_integer const& a, big_integer const& b) {
+    if (a.v == b.v && a.sign == b.sign)
+        return true;
+    return false;
+}
+
+bool big_integer::operator!=(big_integer const& a, big_integer const& b) {
+    if (a == b)
+        return false;
+    return true;
+}
+
 

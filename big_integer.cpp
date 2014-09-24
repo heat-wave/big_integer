@@ -163,4 +163,40 @@ bool big_integer::operator!=(big_integer const& a, big_integer const& b) {
     return true;
 }
 
+bool big_integer::operator<(big_integer const& a, big_integer const& b) {
+    if (a == b)
+        return false;
+    if (a.v < b.v) {
+        if (b.sign == 1)
+            return true;
+        return false;
+    }
+    else { //a.v >= b.v
+        if (a.sign == -1)
+            return true;
+        return false;
+    }
+}
 
+bool big_integer::operator>(big_integer const& a, big_integer const& b) {
+    if (-a < -b)
+        return true;
+    return false;
+}
+
+bool big_integer::operator<=(big_integer const& a, big_integer const& b) {
+    if (a < b || a == b)
+        return true;
+    return false;
+}
+
+bool big_integer::operator<=(big_integer const& a, big_integer const& b) {
+    if (a > b || a == b)
+        return true;
+    return false;
+}
+
+
+std::ostream& operator<<(std::ostream& s, big_integer const& a) {
+
+}

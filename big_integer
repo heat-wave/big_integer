@@ -18,8 +18,8 @@ struct big_integer
     big_integer& operator+=(big_integer const& rhs);
     big_integer& operator-=(big_integer const& rhs);
     big_integer& operator*=(big_integer const& rhs);
-    big_integer& operator/=(big_integer const& rhs);
-    big_integer& operator%=(big_integer const& rhs);
+    //big_integer& operator/=(big_integer const& rhs);
+    //big_integer& operator%=(big_integer const& rhs);
 
     //big_integer& operator&=(big_integer const& rhs);
     //big_integer& operator|=(big_integer const& rhs);
@@ -55,8 +55,8 @@ private:
 big_integer operator+(big_integer a, big_integer const& b);
 big_integer operator-(big_integer a, big_integer const& b);
 big_integer operator*(big_integer a, big_integer const& b);
-big_integer operator/(big_integer a, big_integer const& b);
-big_integer operator%(big_integer a, big_integer const& b);
+//big_integer operator/(big_integer a, big_integer const& b);
+//big_integer operator%(big_integer a, big_integer const& b);
 
 //big_integer operator&(big_integer a, big_integer const& b);
 //big_integer operator|(big_integer a, big_integer const& b);

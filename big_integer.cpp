@@ -1,10 +1,12 @@
 #include <big_integer.h>
 #include <iostream>
+#include <climits>
+#include <algorithm>
 
 big_integer::big_integer()
 {
     v.push_back(0);
-    sign = false;
+    sign = 0;
 }
 
 big_integer::big_integer(big_integer const& other)
@@ -15,14 +17,18 @@ big_integer::big_integer(big_integer const& other)
 
 big_integer::big_integer(int a)
 {
-    v.push_back(a);
-    sign = (a < 0);
+    this->v.push_back(std::abs(a));
+    if (a)
+        sign = (a < 0) ? -1 : 1;
+    else
+        sign = 0;
 }
 
 big_integer::~big_integer()
 {
     v.clear();
-    sign = NULL;
+    // ~sign; ???
+    sign = 0;
 }
 
 big_integer& big_integer::operator=(big_integer const& other)
@@ -32,79 +38,61 @@ big_integer& big_integer::operator=(big_integer const& other)
     return *this;
 }
 
-big_integer& big_integer::operator+=(big_integer const& rhs)
-{
+big_integer& big_integer::operator+=(big_integer const& rhs) {
     long int d = 0;
-    value.resize(std::max(value.size(), rhs.value.size()));
-    if (sign == 0)
-    {
+    this->v.resize(std::max(this->v.size(), rhs.v.size()));
+    if (this->sign == 0) {
         *this = rhs;
         return *this;
     }
     if (rhs.sign == 0)
         return *this;
-    if (sign == rhs.sign)
-    {
-        for(unsigned int i = 0; i < std::max(value.size(), rhs.value.size()); i++)
-        {
-            long long int s;
-            if (i > rhs.value.size())
-                s = (long long int)value[i] + d;
+    long int s;
+    if (this->sign == rhs.sign) {
+        for (size_t i = 0; i < v.size(); i++) {
+            if (i >= rhs.v.size())
+                s = (long int) v[i] + d;
             else
-                s = (long long int)value[i] + (long long int)rhs.value[i] + d;
-            d = s / (4294967296);
-            value[i] = s % (4294967296);
+                s = (long int) v[i] + (long int) rhs.v[i] + d;
+            d = s / (UINT_MAX);
+            v[i] = s % (UINT_MAX);
         }
         if (d != 0)
-            value.push_back(d);
+            v.push_back(d);
     }
-    else if (sign == 1)
-    {
-        if (*this < -rhs)
-            sign = -1;
+    else {
         if (*this == -rhs)
             return *this = 0;
 
-        for(unsigned int i = 0; i < std::max(value.size(), rhs.value.size()); i++)
-        {
-            long long int s;
-            if (i > rhs.value.size())
-                s = (long long int)value[i] + d;
-            else
-                s = (long long int)value[i] - (long long int)rhs.value[i] + d;
-            d = (long int) s / (4294967296);
-            value[i] = (long int) abs(s) % (4294967296);
+        if (sign == 1 && *this < -rhs || sign == -1 && -*this < rhs) {
+            sign = -sign;
+            std::swap(this->v, rhs.v);
         }
-        if (d != 0)
-        {
-            value.push_back(abs(d));
-            if (d < 0)
-                sign = -1;
-        }
-    }
-    else
-    {
-        if (-*this < rhs)
-            sign = 1;
-        if (-*this == rhs)
-            return *this = 0;
-        for(unsigned int i = 0; i < std::max(value.size(), rhs.value.size()); i++)
-        {
-            long long int s;
-            if (i > rhs.value.size())
-                s = (long long int)value[i] + d;
-            else
-                s = -(long long int)value[i] + (long long int)rhs.value[i] + d;
-            d = s / (4294967296);
-            value[i] = abs(s) % (4294967296);
-        }
-        if (d != 0)
-        {
-            value.push_back(abs(d));
-            if (d < 0)
-                sign = 1;
+
+        for (size_t i = 0; i < v.size(); ++i) {
+            if (i >= rhs.v.size())
+                s = (long int) v[i] + d;
+            else {
+                if (v[i] >= rhs.v[i])
+                    s = (long int) v[i] - (long int) rhs.v[i] + d;
+                else {
+                    s = (long int) v[i] + UINT_MAX - (long int) rhs.v[i] + d;
+                    d = -1;
+                }
+            }
+            if (s < 0) {
+                v[i] = UINT_MAX - 1;
+                d = -1;
+            }
+            else {
+                v[i] = s % UINT_MAX;
+                d = 0;
+            }
         }
     }
+
+    while (v[v.size() - 1] == 0)
+        v.pop_back();
+
     return *this;
 }
-

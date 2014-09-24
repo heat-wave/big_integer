@@ -48,8 +48,8 @@ struct big_integer
     //friend std::string to_string(big_integer const& a);
 
 private:
-    vector<int> v;
-    bool sign;
+    vector<unsigned int> v;
+    int sign;
 };
 
 big_integer operator+(big_integer a, big_integer const& b);

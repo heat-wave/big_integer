@@ -166,34 +166,22 @@ bool big_integer::operator!=(big_integer const& a, big_integer const& b) {
 bool big_integer::operator<(big_integer const& a, big_integer const& b) {
     if (a == b)
         return false;
-    if (a.v < b.v) {
-        if (b.sign == 1)
-            return true;
-        return false;
-    }
-    else { //a.v >= b.v
-        if (a.sign == -1)
-            return true;
-        return false;
-    }
+    if (a.v < b.v)
+        return (b.sign == 1);
+    else //a.v >= b.v
+        return (a.sign == -1);
 }
 
 bool big_integer::operator>(big_integer const& a, big_integer const& b) {
-    if (-a < -b)
-        return true;
-    return false;
+    return (-a < -b);
 }
 
 bool big_integer::operator<=(big_integer const& a, big_integer const& b) {
-    if (a < b || a == b)
-        return true;
-    return false;
+    return (a < b || a == b);
 }
 
 bool big_integer::operator<=(big_integer const& a, big_integer const& b) {
-    if (a > b || a == b)
-        return true;
-    return false;
+    return (a > b || a == b);
 }
 
 

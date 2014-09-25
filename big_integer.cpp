@@ -41,7 +41,7 @@ big_integer& big_integer::operator=(big_integer const& other)
 }
 
 big_integer& big_integer::operator+=(big_integer const& rhs) {
-    long int d = 0;
+    long long int d = 0;
     this->v.resize(std::max(this->v.size(), rhs.v.size()));
     if (this->sign == 0) {
         *this = rhs;
@@ -49,13 +49,13 @@ big_integer& big_integer::operator+=(big_integer const& rhs) {
     }
     if (rhs.sign == 0)
         return *this;
-    long int s;
+    long long int s;
     if (this->sign == rhs.sign) {
         for (size_t i = 0; i < v.size(); i++) {
             if (i >= rhs.v.size())
-                s = (long int) v[i] + d;
+                s = (long long int) v[i] + d;
             else
-                s = (long int) v[i] + (long int) rhs.v[i] + d;
+                s = (long long int) v[i] + (long long int) rhs.v[i] + d;
             d = s / (UINT_MAX);
             v[i] = (unsigned  int) s % (UINT_MAX);
         }
@@ -74,12 +74,12 @@ big_integer& big_integer::operator+=(big_integer const& rhs) {
 
         for (size_t i = 0; i < v.size(); ++i) {
             if (i >= rhs.v.size())
-                s = (long int) v[i] + d;
+                s = (long long int) v[i] + d;
             else {
                 if (v[i] >= temp[i])
-                    s = (long int) v[i] - (long int) temp[i] + d;
+                    s = (long long int) v[i] - (long long int) temp[i] + d;
                 else {
-                    s = (long int) v[i] + UINT_MAX - (long int) temp[i] + d;
+                    s = (long long int) v[i] + UINT_MAX - (long long int) temp[i] + d;
                     d = -1;
                 }
             }

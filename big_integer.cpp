@@ -150,3 +150,40 @@ big_integer operator-(big_integer a, big_integer const& b) {
 big_integer operator*(big_integer a, big_integer const& b) {
     return a *= b;
 }
+
+bool big_integer::operator==(big_integer const& a, big_integer const& b) {
+    if (a.v == b.v && a.sign == b.sign)
+        return true;
+    return false;
+}
+
+bool big_integer::operator!=(big_integer const& a, big_integer const& b) {
+    if (a == b)
+        return false;
+    return true;
+}
+
+bool big_integer::operator<(big_integer const& a, big_integer const& b) {
+    if (a == b)
+        return false;
+    if (a.v < b.v)
+        return (b.sign == 1);
+    else //a.v >= b.v
+        return (a.sign == -1);
+}
+
+bool big_integer::operator>(big_integer const& a, big_integer const& b) {
+    return (-a < -b);
+}
+
+bool big_integer::operator<=(big_integer const& a, big_integer const& b) {
+    return (a < b || a == b);
+}
+
+bool big_integer::operator<=(big_integer const& a, big_integer const& b) {
+    return (a > b || a == b);
+}
+
+std::ostream& operator<<(std::ostream& s, big_integer const& a) {
+
+}
